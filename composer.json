@@ -47,5 +47,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "bin": ["devstack"]
+    "bin": ["builds/devstack"]
 }
