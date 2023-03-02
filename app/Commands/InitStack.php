@@ -27,7 +27,7 @@ class InitStack extends Command
         );
         $this->resolveRuntimes();
 
-        $cwd = getcwd() . '/.example';
+        $cwd = getcwd();
 
         if ($this->runtimes[$runtime] ?? null) {
             if (File::copyDirectory($this->disk->path($this->runtimes[$runtime]), $cwd)) {
