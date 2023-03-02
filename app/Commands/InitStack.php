@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use ZipArchive;
 use App\Devstack\WithConfigs;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use LaravelZero\Framework\Commands\Command;
 
@@ -11,9 +12,11 @@ class InitStack extends Command
 {
     use WithConfigs;
 
-    protected $signature = 'init {runtime} {--no-';
+    protected $signature = 'init
+                            {runtime : The runtime to load}
+                            {--latest-runtimes : Whether to get the latest runtimes from the runtimes repository}';
 
-    protected $description = 'Initialize devstack to the current project';
+    protected $description = 'Initialize devstack runtime to the current project';
 
     protected $runtimes = [];
 
@@ -25,22 +28,44 @@ class InitStack extends Command
         $this->resolveRuntimes();
 
         $cwd = getcwd() . '/.example';
-        
 
         if ($this->runtimes[$runtime] ?? null) {
+            if (File::copyDirectory($this->disk->path($this->runtimes[$runtime]), $cwd)) {
+                $this->info("Runtime for <comment>{$runtime}</comment> is now loaded to {$cwd}.");
+                $this->info("
+You can now run the <comment>dev</comment> command. To get started, run <comment>dev up</comment> or <comment>dev up -d</comment> to start the docker containers.
+For the first run, it will build the images first and proceed running the containers. To stop the
+containers, run <comment>dev down</comment>. For more details on the avaialble commands, run <comment>dev help</comment>.
 
-            $result = $this->disk->copy($this->runtimes[$runtime], $cwd);
+To exclude the runtime files to your repository, add the following files below to your .gitignore file:
+<fg=white>./docker</>
+<fg=white>dev</>
+<fg=white>docker-compose.yml</>
 
-            dd($result, $this->runtimes, $cwd, $this->runtimes[$runtime]);
+You're now all set, happy trails!
+                ");
+                $this->notify("Hello Web Artisan", "Love beautiful..", "icon.png");
+            } else {
+                $this->error("Failed to load the {$runtime} runtime to {$cwd}, copy of runtime was unsuccessful.");
+            }
+        } else {
+            $this->error("Failed to load the {$runtime} runtime, the requested runtime is unsupported.");
         }
-
-        $this->info('Cool');
     }
 
     public function resolveRuntimes()
     {
-        if (!$this->disk->exists('runtimes')) {
-            $this->warn("Unable to locate runtimes locally, downloading from source using {$this->config['repository']}.");
+        $runtimesDoesntExistsYet = !$this->disk->exists('runtimes');
+        $shouldGetTheLatestRuntimes = $this->option('latest-runtimes');
+
+        if ($shouldGetTheLatestRuntimes || $runtimesDoesntExistsYet) {
+            if ($runtimesDoesntExistsYet) {
+                $this->warn("Unable to locate runtimes locally, downloading runtimes from {$this->config['repository']}.");
+            }
+
+            if ($shouldGetTheLatestRuntimes) {
+                $this->info("Downloading fresh runtimes from {$this->config['repository']}.");
+            }
             
             $archive = $this->homePath . '/runtimes.zip';
             $downloadUrl = join('/', [$this->config['repository'], 'zipball', $this->config['branch']]);
