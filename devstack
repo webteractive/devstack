@@ -1,25 +1,16 @@
 #!/usr/bin/env php
 <?php
 
-$root = dirname(__DIR__);
-
-echo $root . "\n";
-echo __DIR__ . "\n";
-echo dirname(__FILE__) . "\n";
-
-// if (! is_file(sprintf('%s/vendor/autoload.php', $root))) {
-//     $root = dirname(__DIR__, 4);
-// }
-
-// require sprintf('%s/vendor/autoload.php', $root);
+if (file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
+    require $autoload;
+} else {
+    require __DIR__ . '/../autoload.php';
+}
 
 
+use Symfony\Component\Console\Application;
+use Webteractive\Devstack\InitStack;
 
-// use Symfony\Component\Console\Application;
-// use Webteractive\Devstack\InitStack;
-
-// $application = new Application();
-
-// $application->add(new InitStack);
-
-// $application->run();
+$application = new Application();
+$application->add(new InitStack);
+$application->run();
