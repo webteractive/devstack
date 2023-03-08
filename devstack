@@ -3,17 +3,23 @@
 
 $root = dirname(__DIR__);
 
-if (! is_file(sprintf('%s/vendor/autoload.php', $root))) {
-    $root = dirname(__DIR__, 4);
-}
+echo $root . "\n";
+echo __DIR__ . "\n";
+echo dirname(__FILE__) . "\n";
 
-require sprintf('%s/vendor/autoload.php', $root);
+// if (! is_file(sprintf('%s/vendor/autoload.php', $root))) {
+//     $root = dirname(__DIR__, 4);
+// }
 
-use Symfony\Component\Console\Application;
-use Webteractive\Devstack\InitStack;
+// require sprintf('%s/vendor/autoload.php', $root);
 
-$application = new Application();
 
-$application->add(new InitStack);
 
-$application->run();
+// use Symfony\Component\Console\Application;
+// use Webteractive\Devstack\InitStack;
+
+// $application = new Application();
+
+// $application->add(new InitStack);
+
+// $application->run();
