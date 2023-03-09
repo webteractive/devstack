@@ -50,6 +50,8 @@ class File
 
     public function copyDirectory($directory, $destination, $options = null)
     {
+        dump([$directory, $destination]);
+
         if (! $this->isDirectory($directory)) {
             return false;
         }

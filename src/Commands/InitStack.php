@@ -40,7 +40,7 @@ class InitStack extends Base
         if ($resolvedRuntime = ($this->runtimes[$runtime] ?? null)) {
             if ((new File)->copyDirectory($this->devstackStorage()->path($resolvedRuntime), $destination)) {
                 $this->info("
-Runtime for <comment>{$runtime}</comment> is now loaded to {$destination}.
+Runtime for <comment>{$resolvedRuntime}</comment> is now loaded to {$destination}.
 
 You can now run the <comment>dev</comment> command. To get started, run <comment>dev up</comment> or <comment>dev up -d</comment> to start the docker containers.
 For the first run, it will build the images first and proceed running the containers. To stop the
@@ -102,16 +102,7 @@ You're now all set, happy trails!
                     foreach ($runtimes as $runtime) {
                         $runtimeName = pathinfo($runtime, PATHINFO_BASENAME);
                         $this->runtimes[$runtimeName] = $runtime;
-                        $this->devstackStorage()->move($runtime, 'runtimes/' . $runtimeName, [
-                            'file' => [
-                                'public' => 0755,
-                                'private' => 0755,
-                            ],
-                            'dir' => [
-                                'public' => 0755,
-                                'private' => 0755,
-                            ],
-                        ]);
+                        $this->devstackStorage()->move($runtime, 'runtimes/' . $runtimeName);
                     }
                     $this->devstackStorage()->deleteDirectory('tmp');
                 }
