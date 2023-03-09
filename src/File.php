@@ -41,7 +41,11 @@ class File
 
     public function isDirectory($directory)
     {
-        return is_dir($directory);
+        if ($directory) {
+            return is_dir($directory);
+        }
+
+        return false;
     }
 
     public function copyDirectory($directory, $destination, $options = null)
