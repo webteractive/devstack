@@ -14,7 +14,7 @@ class InitStack extends Base
 
     protected $signature = 'init
                             {runtime? : The runtime to load}
-                            {--ftr : Whether to get the latest runtimes from the runtimes repository}
+                            {--flr : Whether to fetch the latest runtimes from the runtimes repository}
                             {--dest= : The path where to save the runtimes, defaults to the current working directory.}';
     protected $description = 'Initialize devstack runtime to the current project';
 
@@ -72,7 +72,7 @@ You're now all set, happy trails!
     private function resolveRuntimes()
     {
         $runtimesDoesntExistsYet = $this->devstackStorage()->doesntExists('runtimes');
-        $shouldGetTheLatestRuntimes = $this->option('ftr', false);
+        $shouldGetTheLatestRuntimes = $this->option('flr', false);
 
         if ($shouldGetTheLatestRuntimes || $runtimesDoesntExistsYet) {
             if ($runtimesDoesntExistsYet) {
