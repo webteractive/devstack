@@ -69,7 +69,7 @@ abstract class Base extends Command
 
     public function option($name, $default = null)
     {
-        return $this->input->getOption($name, $default);
+        return $this->input->getOption($name) ?? $default;
     }
 
     public function ask($question, $default = null)
