@@ -7,10 +7,11 @@ if (file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
     require dirname(__DIR__, 2) . '/autoload.php';
 }
 
-
 use Symfony\Component\Console\Application;
-use Webteractive\Devstack\InitStack;
+use Webteractive\Devstack\Commands\Config;
+use Webteractive\Devstack\Commands\InitStack;
 
-$application = new Application();
-$application->add(new InitStack);
-$application->run();
+$app = new Application;
+$app->add(new InitStack);
+$app->add(new Config);
+$app->run();
