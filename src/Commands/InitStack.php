@@ -80,6 +80,7 @@ You're now all set, happy trails!
             }
 
             if ($shouldGetTheLatestRuntimes) {
+                $this->devstackStorage()->deleteDirectory('runtimes');
                 $this->info("Downloading fresh runtimes from {$this->config['repository']}.");
             }
             
