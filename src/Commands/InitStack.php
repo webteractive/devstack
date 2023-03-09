@@ -60,7 +60,7 @@ You're now all set, happy trails!
         } else {
             $available = collect($this->getAvailableRuntimes())->join(', ', ' and ');
             $this->error("
-            
+
  Failed to load the {$runtime} runtime, the requested runtime not supported.
  Only {$available} are supported.
             ");
@@ -102,7 +102,16 @@ You're now all set, happy trails!
                     foreach ($runtimes as $runtime) {
                         $runtimeName = pathinfo($runtime, PATHINFO_BASENAME);
                         $this->runtimes[$runtimeName] = $runtime;
-                        $this->devstackStorage()->move($runtime, 'runtimes/' . $runtimeName);
+                        $this->devstackStorage()->move($runtime, 'runtimes/' . $runtimeName, [
+                            'file' => [
+                                'public' => 0755,
+                                'private' => 0755,
+                            ],
+                            'dir' => [
+                                'public' => 0755,
+                                'private' => 0755,
+                            ],
+                        ]);
                     }
                     $this->devstackStorage()->deleteDirectory('tmp');
                 }
