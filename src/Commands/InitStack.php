@@ -48,7 +48,7 @@ containers, run <comment>dev down</comment>. For more details on the avaialble c
 
 To exclude the runtime files to your repository, add the following files below to your .gitignore file:
 
-<fg=white>./docker</>
+<fg=white>/docker</>
 <fg=white>dev</>
 <fg=white>docker-compose.yml</>
 
