@@ -9,9 +9,11 @@ if (file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
 
 use Symfony\Component\Console\Application;
 use Webteractive\Devstack\Commands\Config;
+use Webteractive\Devstack\Commands\DownloadRuntimes;
 use Webteractive\Devstack\Commands\InitStack;
 
 $app = new Application;
 $app->add(new InitStack);
 $app->add(new Config);
+$app->add(new DownloadRuntimes);
 $app->run();

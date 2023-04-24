@@ -11,6 +11,7 @@ trait ShouldConfigure
     protected $branch;
     protected $token;
     protected $config;
+    protected $runtimes = [];
 
     public function ensureConfigurationIsSet($runtime = null)
     {

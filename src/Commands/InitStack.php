@@ -2,23 +2,19 @@
 
 namespace Webteractive\Devstack\Commands;
 
+use Webteractive\Devstack\RuntimeDownloader;
 use Webteractive\Devstack\File;
 use Webteractive\Devstack\ShouldConfigure;
-use Webteractive\Devstack\WithHttp;
-use ZipArchive;
 
 class InitStack extends Base
 {
-    use ShouldConfigure,
-        WithHttp;
+    use ShouldConfigure;
 
     protected $signature = 'init
                             {runtime? : The runtime to load}
                             {--flr : Whether to fetch the latest runtimes from the runtimes repository}
                             {--dest= : The path where to save the runtimes, defaults to the current working directory.}';
     protected $description = 'Initialize devstack runtime to the current project';
-
-    protected $runtimes = [];
 
     public function handle(): int
     {
@@ -79,35 +75,7 @@ You're now all set, happy trails!
                 $this->warn("Unable to locate runtimes locally, downloading runtimes from {$this->config['repository']}.");
             }
 
-            if ($shouldGetTheLatestRuntimes) {
-                $this->devstackStorage()->deleteDirectory('runtimes');
-                $this->info("Downloading fresh runtimes from {$this->config['repository']}.");
-            }
-            
-            $archive = $this->homePath('runtimes.zip');
-            $downloadUrl = join('/', [$this->config['repository'], 'zipball', $this->config['branch']]);
-            $response = $this->http()->get($downloadUrl, [
-                'headers' => [
-                    'Authorization' => 'token ' . $this->config['token'],
-                ],
-                'sink' => $archive
-            ]);
-
-            if ($response->getStatusCode() == 200) {
-                $zip = new ZipArchive;
-                if ($zip->open($archive)) {
-                    $zip->extractTo($this->homePath('tmp'));
-                    $zip->close();
-                    $this->devstackStorage()->delete('runtimes.zip');
-                    $runtimes = $this->devstackStorage()->directories($this->devstackStorage()->directories('tmp')[0]);
-                    foreach ($runtimes as $runtime) {
-                        $runtimeName = pathinfo($runtime, PATHINFO_BASENAME);
-                        $this->runtimes[$runtimeName] = $runtime;
-                        $this->devstackStorage()->move($runtime, 'runtimes/' . $runtimeName);
-                    }
-                    $this->devstackStorage()->deleteDirectory('tmp');
-                }
-            }
+            (new RuntimeDownloader($this, $this->config))->download($shouldGetTheLatestRuntimes);
         }
 
         foreach ($this->devstackStorage()->directories('runtimes') as $runtimePath) {
