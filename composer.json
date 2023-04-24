@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^7.4",
+        "guzzlehttp/guzzle": "^7.5.1",
         "illuminate/support": "^10.3",
         "league/flysystem": "^3.0",
         "symfony/console": "^6.2",
