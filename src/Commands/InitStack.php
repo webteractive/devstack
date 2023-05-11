@@ -4,6 +4,7 @@ namespace Webteractive\Devstack\Commands;
 
 use Webteractive\Devstack\RuntimeDownloader;
 use Webteractive\Devstack\File;
+use Webteractive\Devstack\PublicRuntimeDownloader;
 use Webteractive\Devstack\ShouldConfigure;
 
 class InitStack extends Base
@@ -18,9 +19,22 @@ class InitStack extends Base
 
     public function handle(): int
     {
+        $destination = $this->option('dest', getcwd());
+        
         $this->ensureConfigurationIsSet(
             $runtime = $this->argument('runtime')
         );
+
+        if (filter_var($runtime, FILTER_VALIDATE_URL)) {
+            $resolvedRuntime = (new PublicRuntimeDownloader)->download($runtime);
+            if ((new File)->copyDirectory($this->devstackStorage()->path($resolvedRuntime), $destination)) {
+                $this->info($this->makeMessage($runtime, $destination));
+            } else {
+                $this->error("Failed to load the {$runtime} runtime to {$destination}, copy of runtime was unsuccessful.");
+            }
+
+            return static::SUCCESS;
+        }
 
         $this->resolveRuntimes();
 
@@ -31,25 +45,11 @@ class InitStack extends Base
             );
         }
 
-        $destination = $this->option('dest', getcwd());
+        
 
         if ($resolvedRuntime = ($this->runtimes[$runtime] ?? null)) {
             if ((new File)->copyDirectory($this->devstackStorage()->path($resolvedRuntime), $destination)) {
-                $this->info("
-Runtime for <comment>{$runtime}</comment> is now loaded to {$destination}.
-
-You can now run the <comment>dev</comment> command. To get started, run <comment>dev up</comment> or <comment>dev up -d</comment> to start the docker containers.
-For the first run, it will build the images first and proceed running the containers. To stop the
-containers, run <comment>dev down</comment>. For more details on the avaialble commands, run <comment>dev help</comment>.
-
-To exclude the runtime files to your repository, add the following files below to your .gitignore file:
-
-<fg=white>/docker</>
-<fg=white>dev</>
-<fg=white>docker-compose.yml</>
-
-You're now all set, happy trails!
-                ");
+                $this->info($this->makeMessage($runtime, $destination));
             } else {
                 $this->error("Failed to load the {$runtime} runtime to {$destination}, copy of runtime was unsuccessful.");
             }
@@ -87,5 +87,23 @@ You're now all set, happy trails!
     {
         return collect($this->devstackStorage()->directories('runtimes'))
             ->map(fn ($item) => pathinfo($item, PATHINFO_BASENAME));
+    }
+
+    public function makeMessage($runtime, $destination)
+    {
+        return "
+Runtime for <comment>{$runtime}</comment> is now loaded to {$destination}.
+
+You can now run the <comment>dev</comment> command. To get started, run <comment>dev up</comment> or <comment>dev up -d</comment> to start the docker containers.
+For the first run, it will build the images first and proceed running the containers. To stop the
+containers, run <comment>dev down</comment>. For more details on the avaialble commands, run <comment>dev help</comment>.
+
+To exclude the runtime files to your repository, add the following files below to your .gitignore file:
+
+<fg=white>/docker</>
+<fg=white>dev</>
+<fg=white>docker-compose.yml</>
+
+You're now all set, happy trails!";
     }
 }

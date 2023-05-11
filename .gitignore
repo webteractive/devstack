@@ -1,9 +1,4 @@
-*
-!/src/*
-!.editorconfig
-!.gitattributes
-!.gitignore
-!composer.json
-!devstack
-!LICENSE
-!README.md
+composer.lock
+.DS_Store
+vendor
+example
