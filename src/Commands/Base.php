@@ -10,6 +10,8 @@ use Webteractive\Devstack\CommandSignature;
 
 abstract class Base extends Command
 {
+    protected $fullCommandSignature;
+
     protected $name;
 
     protected $signature;
@@ -20,9 +22,9 @@ abstract class Base extends Command
 
     protected $hidden = false;
 
-    protected $input;
+    protected InputInterface $input;
 
-    protected $output;
+    protected OutputInterface $output;
 
     public function __construct()
     {
@@ -55,8 +57,10 @@ abstract class Base extends Command
             ->handle();
     }
 
-    public function setIO($input, $output)
+    public function setIO(InputInterface $input, OutputInterface $output)
     {
+        global $argv;
+        $this->fullCommandSignature = array_slice($argv, 2);
         $this->input = $input;
         $this->output = $output;
         return $this;
