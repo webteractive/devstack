@@ -2,10 +2,13 @@
 
 namespace Webteractive\Devstack\Commands;
 
-use Symfony\Component\Process\Process;
+use Webteractive\Devstack\Process;
+use Webteractive\Devstack\WithSignalHandlers;
 
 class RunDockerCommands extends Base
 {
+    use WithSignalHandlers;
+
     public function __construct($name, $description)
     {
         $this->signature = $name;
@@ -18,14 +21,16 @@ class RunDockerCommands extends Base
 
     public function handle(): int
     {
-        [, $name] = explode(':', $this->getName());
-        $processSignature = ['docker', 'compose', $name];
-        $process = new Process(array_merge($processSignature, $this->fullCommandSignature));
-        $process->setTty(true);
-        $process->run();
-        $process->run(function ($type, $buffer) {
-            $this->line($buffer);
-        });
+        $commandSignature = array_merge(
+            ['docker', 'compose', $this->getName()],
+            $this->fullCommandSignature
+        );
+
+        $this->handleTerminationSignals(
+            $process = Process::prepare($commandSignature)
+        );
+
+        $process->setTty(true)->run();
 
         return static::SUCCESS;
     }

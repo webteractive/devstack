@@ -5,7 +5,7 @@ namespace Webteractive\Devstack;
 use Symfony\Component\Console\Application;
 use Webteractive\Devstack\Commands\RunDockerCommands;
 
-class RegisterDockerCommands
+class RegisterDockerComposeCommands
 {
     protected static $commands = [
         'build' => 'Build or rebuild services.',
@@ -38,7 +38,7 @@ class RegisterDockerCommands
     public static function register(Application $app, $prefix = 'runtime')
     {
         foreach (static::$commands as $name => $description) {
-            $app->add(new RunDockerCommands($prefix . ':' . $name, $description));
+            $app->add(new RunDockerCommands($name, $description));
         }
     }
 }

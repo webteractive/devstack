@@ -7,18 +7,28 @@ if (file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
     require dirname(__DIR__, 2) . '/autoload.php';
 }
 
-use Symfony\Component\Console\Application;
+use Webteractive\Devstack\App;
 use Webteractive\Devstack\Commands\Config;
 use Webteractive\Devstack\Commands\InitStack;
-use Webteractive\Devstack\RegisterDockerCommands;
+use Webteractive\Devstack\RegisterDockerComposeCommands;
 use Webteractive\Devstack\Commands\DownloadRuntimes;
+use Webteractive\Devstack\Commands\MySql;
+use Webteractive\Devstack\Commands\RunComposerCommands;
+use Webteractive\Devstack\Commands\RunLaravelArtisanCommand;
+use Webteractive\Devstack\Commands\RunPHPCommand;
+use Webteractive\Devstack\Commands\Shell;
 
-$app = new Application;
+$app = new App('Devstack', '1.0.0');
 
 $app->add(new InitStack);
 $app->add(new Config);
 $app->add(new DownloadRuntimes);
+$app->add(new RunLaravelArtisanCommand);
+$app->add(new RunPHPCommand);
+$app->add(new RunComposerCommands);
+$app->add(new Shell);
+$app->add(new MySql);
 
-RegisterDockerCommands::register($app);
+RegisterDockerComposeCommands::register($app);
 
 $app->run();

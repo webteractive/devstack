@@ -45,10 +45,20 @@ abstract class Base extends Command
     {
         [$name, $arguments, $options] = CommandSignature::parse($this->signature);
 
+
+        if ($this->shouldIgnoreValidationErrors()) {
+            $this->ignoreValidationErrors();
+        }
+
         parent::__construct($name);
 
         $this->getDefinition()->addArguments($arguments);
         $this->getDefinition()->addOptions($options);
+    }
+
+    public function shouldIgnoreValidationErrors(): bool
+    {
+        return false;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
