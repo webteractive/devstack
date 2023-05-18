@@ -19,7 +19,7 @@ use Webteractive\Devstack\Commands\RunComposerCommands;
 use Webteractive\Devstack\RegisterDockerComposeCommands;
 use Webteractive\Devstack\Commands\RunLaravelArtisanCommand;
 
-$app = new App('Devstack', '1.1.5');
+$app = new App('Devstack', '1.1.7');
 
 $app->add(new InitStack);
 $app->add(new Config);
