@@ -13,6 +13,7 @@ use Webteractive\Devstack\Commands\InitStack;
 use Webteractive\Devstack\RegisterDockerComposeCommands;
 use Webteractive\Devstack\Commands\DownloadRuntimes;
 use Webteractive\Devstack\Commands\MySql;
+use Webteractive\Devstack\Commands\Redis;
 use Webteractive\Devstack\Commands\RunComposerCommands;
 use Webteractive\Devstack\Commands\RunLaravelArtisanCommand;
 use Webteractive\Devstack\Commands\RunPHPCommand;
@@ -28,6 +29,7 @@ $app->add(new RunPHPCommand);
 $app->add(new RunComposerCommands);
 $app->add(new Shell);
 $app->add(new MySql);
+$app->add(new Redis);
 
 RegisterDockerComposeCommands::register($app);
 

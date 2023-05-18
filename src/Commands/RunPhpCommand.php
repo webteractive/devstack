@@ -5,7 +5,7 @@ namespace Webteractive\Devstack\Commands;
 use Webteractive\Devstack\Process;
 use Webteractive\Devstack\WithSignalHandlers;
 
-class RunPHPCommand extends Base
+class RunPhpCommand extends Base
 {
     use WithSignalHandlers;
 

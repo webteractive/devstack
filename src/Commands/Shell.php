@@ -29,7 +29,10 @@ class Shell extends Base
             $process = Process::prepare(array_merge($command, ['app', 'bash']))
         );
 
-        $process->setTty(true)->run();
+        $process->setTty(true)
+            ->setTimeout(60 * 60 * 2)
+            ->setIdleTimeout(60 * 60 * 8)
+            ->run();
 
         return static::SUCCESS;
     }

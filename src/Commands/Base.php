@@ -2,6 +2,7 @@
 
 namespace Webteractive\Devstack\Commands;
 
+use Dotenv\Dotenv;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,7 +28,7 @@ abstract class Base extends Command
     protected OutputInterface $output;
 
     public function __construct()
-    {
+    {   
         if (isset($this->signature)) {
             $this->setup();
         } else {
@@ -127,6 +128,11 @@ abstract class Base extends Command
     {
         $this->output->writeln($message);
         return $this;
+    }
+
+    public function lineBreak()
+    {
+        return $this->line('');
     }
 
     public function info($message = '')
