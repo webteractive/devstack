@@ -12,7 +12,7 @@ This assumes that PHP and Composer is already installed. This also assumes that 
 
 ## Initializing Runtimes
 There are to ways to initialize runtimes.
-1. By running `devstack https://github.com/vendor/the-name-of-the-runtime`.
+1. By running `devstack init https://github.com/vendor/the-name-of-the-runtime`.
 2. By using a private repository. This good for runtimes that you don't want to share to the world.
 
 ### Using Private Runtimes
