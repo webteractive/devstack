@@ -2,7 +2,6 @@
 
 namespace Webteractive\Devstack;
 
-use League\Flysystem\DirectoryListing;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 

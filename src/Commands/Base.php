@@ -2,14 +2,16 @@
 
 namespace Webteractive\Devstack\Commands;
 
+use Webteractive\Devstack\CommandSignature;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Webteractive\Devstack\CommandSignature;
 
 abstract class Base extends Command
 {
+    protected $fullCommandSignature;
+
     protected $name;
 
     protected $signature;
@@ -20,12 +22,12 @@ abstract class Base extends Command
 
     protected $hidden = false;
 
-    protected $input;
+    protected InputInterface $input;
 
-    protected $output;
+    protected OutputInterface $output;
 
     public function __construct()
-    {
+    {   
         if (isset($this->signature)) {
             $this->setup();
         } else {
@@ -43,10 +45,20 @@ abstract class Base extends Command
     {
         [$name, $arguments, $options] = CommandSignature::parse($this->signature);
 
+
+        if ($this->shouldIgnoreValidationErrors()) {
+            $this->ignoreValidationErrors();
+        }
+
         parent::__construct($name);
 
         $this->getDefinition()->addArguments($arguments);
         $this->getDefinition()->addOptions($options);
+    }
+
+    public function shouldIgnoreValidationErrors(): bool
+    {
+        return false;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -55,8 +67,10 @@ abstract class Base extends Command
             ->handle();
     }
 
-    public function setIO($input, $output)
+    public function setIO(InputInterface $input, OutputInterface $output)
     {
+        global $argv;
+        $this->fullCommandSignature = array_slice($argv, 2);
         $this->input = $input;
         $this->output = $output;
         return $this;
@@ -113,6 +127,11 @@ abstract class Base extends Command
     {
         $this->output->writeln($message);
         return $this;
+    }
+
+    public function lineBreak()
+    {
+        return $this->line('');
     }
 
     public function info($message = '')
