@@ -2,10 +2,10 @@
 
 namespace Webteractive\Devstack\Commands;
 
-use Webteractive\Devstack\RuntimeDownloader;
 use Webteractive\Devstack\File;
-use Webteractive\Devstack\PublicRuntimeDownloader;
 use Webteractive\Devstack\ShouldConfigure;
+use Webteractive\Devstack\RuntimeDownloader;
+use Webteractive\Devstack\PublicRuntimeDownloader;
 
 class InitStack extends Base
 {

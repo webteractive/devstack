@@ -8,16 +8,16 @@ if (file_exists($autoload = __DIR__ . '/vendor/autoload.php')) {
 }
 
 use Webteractive\Devstack\App;
-use Webteractive\Devstack\Commands\Config;
-use Webteractive\Devstack\Commands\InitStack;
-use Webteractive\Devstack\RegisterDockerComposeCommands;
-use Webteractive\Devstack\Commands\DownloadRuntimes;
 use Webteractive\Devstack\Commands\MySql;
 use Webteractive\Devstack\Commands\Redis;
-use Webteractive\Devstack\Commands\RunComposerCommands;
-use Webteractive\Devstack\Commands\RunLaravelArtisanCommand;
-use Webteractive\Devstack\Commands\RunPHPCommand;
 use Webteractive\Devstack\Commands\Shell;
+use Webteractive\Devstack\Commands\Config;
+use Webteractive\Devstack\Commands\InitStack;
+use Webteractive\Devstack\Commands\RunPHPCommand;
+use Webteractive\Devstack\Commands\DownloadRuntimes;
+use Webteractive\Devstack\Commands\RunComposerCommands;
+use Webteractive\Devstack\RegisterDockerComposeCommands;
+use Webteractive\Devstack\Commands\RunLaravelArtisanCommand;
 
 $app = new App('Devstack', '1.0.0');
 

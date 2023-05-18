@@ -2,8 +2,8 @@
 
 namespace Webteractive\Devstack\Commands;
 
-use Webteractive\Devstack\RuntimeDownloader;
 use Webteractive\Devstack\ShouldConfigure;
+use Webteractive\Devstack\RuntimeDownloader;
 
 class DownloadRuntimes extends Base
 {
