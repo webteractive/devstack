@@ -11,8 +11,7 @@ use Webteractive\Devstack\WithStorage;
 
 class MySql extends Base
 {
-    use WithSignalHandlers,
-        WithEnv;
+    use WithSignalHandlers;
 
     protected $signature = 'mysql
                             {--p|password= : The password to use.}
