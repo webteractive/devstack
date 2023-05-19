@@ -20,7 +20,7 @@ use Webteractive\Devstack\Commands\Download;
 use Webteractive\Devstack\Commands\Composer;
 use Webteractive\Devstack\RegisterDockerComposeCommands;
 
-$app = new App('Devstack', '1.1.7');
+$app = new App('Devstack', '1.1.8');
 
 $app->add(new Init);
 $app->add(new Config);
