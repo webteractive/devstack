@@ -3,7 +3,7 @@
 namespace Webteractive\Devstack;
 
 use Symfony\Component\Console\Application;
-use Webteractive\Devstack\Commands\RunDockerCommands;
+use Webteractive\Devstack\Commands\DockerCompose;
 
 class RegisterDockerComposeCommands
 {
@@ -38,7 +38,7 @@ class RegisterDockerComposeCommands
     public static function register(Application $app, $prefix = 'runtime')
     {
         foreach (static::$commands as $name => $description) {
-            $app->add(new RunDockerCommands($name, $description));
+            $app->add(new DockerCompose($name, '<comment>[Docker Compose]</comment> ' . $description));
         }
     }
 }

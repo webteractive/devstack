@@ -5,12 +5,12 @@ namespace Webteractive\Devstack\Commands;
 use Webteractive\Devstack\Process;
 use Webteractive\Devstack\WithSignalHandlers;
 
-class RunComposerCommands extends Base
+class Wp extends Base
 {
     use WithSignalHandlers;
 
-    protected $signature = 'composer';
-    protected $description = 'Run composer commands.';
+    protected $signature = 'wp';
+    protected $description = 'Run <info>WordPress CLI</info> commands within the <info>app</info> container.';
 
     public function shouldIgnoreValidationErrors(): bool
     {
@@ -19,7 +19,6 @@ class RunComposerCommands extends Base
 
     public function handle(): int
     {
-
         $command = [
             'docker',
             'compose',
@@ -28,14 +27,16 @@ class RunComposerCommands extends Base
             'dev',
             '-T',
             'app',
-            'composer',
+            'wp',
         ];
 
         $this->handleTerminationSignals(
             $process = Process::prepare(array_merge($command, $this->fullCommandSignature))
         );
 
-        $process->setTty(true)->run();
+        $process->setTimeout(null)
+            ->setTty(true)
+            ->run();
 
         return static::SUCCESS;
     }

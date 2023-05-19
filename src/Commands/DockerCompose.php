@@ -3,9 +3,10 @@
 namespace Webteractive\Devstack\Commands;
 
 use Webteractive\Devstack\Process;
+use Symfony\Component\Process\Process as SymfonyProcess;
 use Webteractive\Devstack\WithSignalHandlers;
 
-class RunDockerCommands extends Base
+class DockerCompose extends Base
 {
     use WithSignalHandlers;
 
@@ -30,7 +31,9 @@ class RunDockerCommands extends Base
             $process = Process::prepare($commandSignature)
         );
 
-        $process->setTty(true)->run();
+        $process->setTimeout(null)
+            ->setTty(true)
+            ->run();
 
         return static::SUCCESS;
     }

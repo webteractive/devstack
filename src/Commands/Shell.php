@@ -10,7 +10,7 @@ class Shell extends Base
     use WithSignalHandlers;
 
     protected $signature = 'shell {--r|root : As a root user.}';
-    protected $description = 'Start a shell session within the application container';
+    protected $description = 'Start a shell session within the <info>app</info> container.';
 
     public function handle(): int
     {
@@ -30,8 +30,7 @@ class Shell extends Base
         );
 
         $process->setTty(true)
-            ->setTimeout(60 * 60 * 2)
-            ->setIdleTimeout(60 * 60 * 8)
+            ->setTimeout(null)
             ->run();
 
         return static::SUCCESS;

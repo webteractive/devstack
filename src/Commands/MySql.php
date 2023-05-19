@@ -15,7 +15,7 @@ class MySql extends Base
                             {--u|user= : The user to use.}
                             {--db|database= : The database to use.}
                             {--env= : The path to the .env file. Default\'s to the current working directory.}';
-    protected $description = 'Start a MySQL CLI session within the <comment>mysql</comment> container.';
+    protected $description = 'Start a <info>MySQL CLI</info> session within the <info>mysql</info> container.';
 
     public function handle(): int
     {
@@ -70,8 +70,7 @@ class MySql extends Base
         );
 
         $process->setTty(true)
-            ->setTimeout(60 * 60 * 2)
-            ->setIdleTimeout(60 * 60 * 8)
+            ->setTimeout(null)
             ->run();
 
         return static::SUCCESS;

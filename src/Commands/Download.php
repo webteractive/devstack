@@ -5,12 +5,12 @@ namespace Webteractive\Devstack\Commands;
 use Webteractive\Devstack\ShouldConfigure;
 use Webteractive\Devstack\RuntimeDownloader;
 
-class DownloadRuntimes extends Base
+class Download extends Base
 {
     use ShouldConfigure;
 
     protected $signature = 'download';
-    protected $description = 'Download latest runtimes';
+    protected $description = 'Download latest private runtimes.';
 
     public function handle(): int
     {
