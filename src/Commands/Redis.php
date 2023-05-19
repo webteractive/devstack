@@ -10,7 +10,7 @@ class Redis extends Base
     use WithSignalHandlers;
 
     protected $signature = 'redis';
-    protected $description = 'Start a Redis CLI session within the <comment>redis</comment> container.';
+    protected $description = 'Start a <info>Redis CLI</info> session within the <info>redis</info> container.';
 
     public function handle(): int
     {
@@ -20,8 +20,7 @@ class Redis extends Base
         );
 
         $process->setTty(true)
-            ->setTimeout(60 * 60 * 2)
-            ->setIdleTimeout(60 * 60 * 8)
+            ->setTimeout(null)
             ->run();
 
         return static::SUCCESS;

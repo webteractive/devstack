@@ -5,12 +5,12 @@ namespace Webteractive\Devstack\Commands;
 use Webteractive\Devstack\Process;
 use Webteractive\Devstack\WithSignalHandlers;
 
-class RunPhpCommand extends Base
+class Composer extends Base
 {
     use WithSignalHandlers;
 
-    protected $signature = 'php';
-    protected $description = 'Run PHP commands.';
+    protected $signature = 'composer';
+    protected $description = 'Run <info>composer</info> commands within the <info>app</info> container.';
 
     public function shouldIgnoreValidationErrors(): bool
     {
@@ -19,6 +19,7 @@ class RunPhpCommand extends Base
 
     public function handle(): int
     {
+
         $command = [
             'docker',
             'compose',
@@ -27,14 +28,16 @@ class RunPhpCommand extends Base
             'dev',
             '-T',
             'app',
-            'php',
+            'composer',
         ];
 
         $this->handleTerminationSignals(
             $process = Process::prepare(array_merge($command, $this->fullCommandSignature))
         );
 
-        $process->setTty(true)->run();
+        $process->setTimeout(null)
+            ->setTty(true)
+            ->run();
 
         return static::SUCCESS;
     }

@@ -5,12 +5,12 @@ namespace Webteractive\Devstack\Commands;
 use Webteractive\Devstack\Process;
 use Webteractive\Devstack\WithSignalHandlers;
 
-class RunLaravelArtisanCommand extends Base
+class Artisan extends Base
 {
     use WithSignalHandlers;
 
     protected $signature = 'artisan';
-    protected $description = 'Run Laravel\'s artisan command.';
+    protected $description = 'Run <info>Laravel\'s artisan</info> command within the <info>app</info> container.';
 
     public function shouldIgnoreValidationErrors(): bool
     {
@@ -35,7 +35,9 @@ class RunLaravelArtisanCommand extends Base
             $process = Process::prepare(array_merge($command, $this->fullCommandSignature))
         );
 
-        $process->setTty(true)->run();
+        $process->setTimeout(null)
+            ->setTty(true)
+            ->run();
 
         return static::SUCCESS;
     }

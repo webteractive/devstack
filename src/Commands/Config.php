@@ -9,7 +9,7 @@ class Config extends Base
     use ShouldConfigure;
 
     protected $signature = 'config';
-    protected $description = 'Configure Devstack runtime settings';
+    protected $description = 'Configure private devstack runtime settings.';
 
     public function handle(): int
     {

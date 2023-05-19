@@ -7,7 +7,7 @@ use Webteractive\Devstack\ShouldConfigure;
 use Webteractive\Devstack\RuntimeDownloader;
 use Webteractive\Devstack\PublicRuntimeDownloader;
 
-class InitStack extends Base
+class Init extends Base
 {
     use ShouldConfigure;
 
